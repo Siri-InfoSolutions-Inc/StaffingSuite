@@ -125,6 +125,79 @@ summary{padding:15px;font-weight:900;color:var(--navy);cursor:pointer}
 .rtr-intro{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 12px}
 .rtr-details-grid{margin-top:0!important;margin-bottom:14px}
 @media(max-width:620px){.rtr-details-grid{grid-template-columns:1fr!important}}
+
+.primary-entry-heading{
+  grid-column:1/-1;
+  text-align:center;
+  padding:4px 0 2px;
+}
+.primary-entry-heading h3{
+  margin:2px 0 5px;
+  color:var(--navy);
+  font-size:21px;
+}
+.primary-entry-heading p{
+  margin:0 auto 8px;
+  color:var(--muted);
+  font-size:12px;
+}
+.recruiter-input-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+.primary-rate-field{
+  padding:17px;
+  border:2px solid var(--blue);
+  border-radius:13px;
+  background:linear-gradient(135deg,#eef7ff,#ffffff);
+  box-shadow:0 7px 20px rgba(23,105,170,.10);
+}
+body.dark .primary-rate-field{background:#203240}
+.primary-rate-field label{
+  color:var(--navy)!important;
+  font-size:14px!important;
+}
+.primary-rate-field input{
+  font-size:24px!important;
+  font-weight:900!important;
+  padding:14px!important;
+  border:2px solid var(--blue)!important;
+  text-align:center;
+}
+.secondary-settings-label{
+  grid-column:1/-1;
+  margin-top:8px;
+  padding-top:14px;
+  border-top:1px dashed var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.secondary-settings-label span{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.12em;
+  color:var(--muted);
+}
+.secondary-settings-label small{
+  color:var(--muted);
+  font-size:10px;
+}
+.secondary-field{
+  opacity:.82;
+  background:var(--input);
+  padding:10px;
+  border-radius:9px;
+  border:1px solid var(--border);
+}
+.secondary-field input,.secondary-field select{
+  font-size:13px!important;
+  padding:9px!important;
+}
+@media(max-width:620px){
+ .recruiter-input-grid{grid-template-columns:1fr!important}
+ .secondary-settings-label{display:block}
+ .secondary-settings-label small{display:block;margin-top:4px}
+}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -134,15 +207,6 @@ summary{padding:15px;font-weight:900;color:var(--navy);cursor:pointer}
  &lt;div class=&quot;brand&quot;&gt;&lt;h1&gt;Staffing Rate &amp; Margin Calculator&lt;/h1&gt;&lt;p&gt;Siri InfoSolutions Inc. · Staffing Pricing Intelligence&lt;/p&gt;&lt;/div&gt;
  &lt;button class=&quot;theme&quot; onclick=&quot;toggleTheme()&quot;&gt;🌙 Night&lt;/button&gt;
 &lt;/header&gt;
-
-&lt;nav class=&quot;business-tabs&quot;&gt;
- &lt;button class=&quot;business-tab active&quot; data-business=&quot;it&quot; onclick=&quot;setBusiness(&#x27;it&#x27;)&quot;&gt;
-   &lt;span class=&quot;tab-icon&quot;&gt;💻&lt;/span&gt;&lt;span&gt;&lt;b&gt;IT / Non-IT Staffing&lt;/b&gt;&lt;small&gt;W2 · C2C · 1099&lt;/small&gt;&lt;/span&gt;
- &lt;/button&gt;
- &lt;button class=&quot;business-tab&quot; data-business=&quot;healthcare&quot; onclick=&quot;setBusiness(&#x27;healthcare&#x27;)&quot;&gt;
-   &lt;span class=&quot;tab-icon&quot;&gt;🏥&lt;/span&gt;&lt;span&gt;&lt;b&gt;Healthcare Staffing&lt;/b&gt;&lt;small&gt;Travel Pay Package &amp; Margin&lt;/small&gt;&lt;/span&gt;
- &lt;/button&gt;
-&lt;/nav&gt;
 
 &lt;div id=&quot;itTypeSelector&quot; class=&quot;employment-selector&quot;&gt;
  &lt;span class=&quot;selector-label&quot;&gt;Employment Type&lt;/span&gt;
@@ -158,17 +222,23 @@ summary{padding:15px;font-weight:900;color:var(--navy);cursor:pointer}
 &lt;section class=&quot;section&quot;&gt;
  &lt;div class=&quot;eyebrow&quot;&gt;PACKAGE INPUTS&lt;/div&gt;&lt;h2&gt;Enter Assignment &amp; Pay Details&lt;/h2&gt;
  &lt;div class=&quot;helper&quot;&gt;Choose the employment model and enter the deal terms. Margin, approval status, recruiter package, OT impact, and contract totals update automatically.&lt;/div&gt;
- &lt;div class=&quot;grid&quot;&gt;
-  &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Bill Rate ($/hr)&lt;/label&gt;&lt;input id=&quot;br&quot; type=&quot;number&quot; value=&quot;90&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;field&quot;&gt;&lt;label id=&quot;payLabel&quot;&gt;Taxable Pay Rate ($/hr)&lt;/label&gt;&lt;input id=&quot;pr&quot; type=&quot;number&quot; value=&quot;60&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
+ &lt;div class=&quot;primary-entry-heading&quot;&gt;
+  &lt;div class=&quot;eyebrow&quot;&gt;RECRUITER INPUT&lt;/div&gt;
+  &lt;h3&gt;Enter Only Bill Rate &amp;amp; Pay Rate&lt;/h3&gt;
+  &lt;p&gt;These are the two main fields recruiters need to enter. The calculator will update the margin automatically.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;grid recruiter-input-grid&quot;&gt;
+  &lt;div class=&quot;field primary-rate-field&quot;&gt;&lt;label&gt;Bill Rate ($/hr)&lt;/label&gt;&lt;input id=&quot;br&quot; type=&quot;number&quot; value=&quot;90&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;field primary-rate-field&quot;&gt;&lt;label id=&quot;payLabel&quot;&gt;Taxable Pay Rate ($/hr)&lt;/label&gt;&lt;input id=&quot;pr&quot; type=&quot;number&quot; value=&quot;60&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;field travel-only hidden&quot;&gt;&lt;label&gt;Weekly Stipend ($)&lt;/label&gt;&lt;input id=&quot;stipend&quot; type=&quot;number&quot; value=&quot;1240&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Regular Hours / Week&lt;/label&gt;&lt;input id=&quot;hours&quot; type=&quot;number&quot; value=&quot;40&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;secondary-settings-label&quot;&gt;&lt;span&gt;SECONDARY SETTINGS&lt;/span&gt;&lt;small&gt;Review only when the deal requires changes&lt;/small&gt;&lt;/div&gt;
+&lt;div class=&quot;field secondary-field&quot;&gt;&lt;label&gt;Regular Hours / Week&lt;/label&gt;&lt;input id=&quot;hours&quot; type=&quot;number&quot; value=&quot;40&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;field healthcare-only hidden&quot;&gt;&lt;label&gt;Contract Tenure (Weeks)&lt;/label&gt;&lt;input id=&quot;tenure&quot; type=&quot;number&quot; value=&quot;13&quot; min=&quot;1&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;field&quot;&gt;&lt;label&gt;MSP / VMS Fee (%)&lt;/label&gt;&lt;input id=&quot;msp&quot; type=&quot;number&quot; value=&quot;6.5&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;field secondary-field&quot;&gt;&lt;label&gt;MSP / VMS Fee (%)&lt;/label&gt;&lt;input id=&quot;msp&quot; type=&quot;number&quot; value=&quot;6.5&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;field burden-field&quot;&gt;&lt;label id=&quot;burdenLabel&quot;&gt;W2 Payroll Burden (%)&lt;/label&gt;&lt;input id=&quot;burden&quot; type=&quot;number&quot; value=&quot;15&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Operational Cost ($/hr)&lt;/label&gt;&lt;input id=&quot;ops&quot; type=&quot;number&quot; value=&quot;2&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;field&quot;&gt;&lt;label&gt;Desired Minimum Net Margin ($/hr)&lt;/label&gt;&lt;input id=&quot;desired&quot; type=&quot;number&quot; value=&quot;5&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;field&quot;&gt;&lt;label&gt;OT Scenario&lt;/label&gt;&lt;select id=&quot;otMode&quot; onchange=&quot;toggleOT()&quot;&gt;&lt;option value=&quot;none&quot;&gt;No OT Expected&lt;/option&gt;&lt;option value=&quot;premium&quot;&gt;Client Pays OT Premium&lt;/option&gt;&lt;option value=&quot;straight&quot;&gt;Client Pays Straight Time Only&lt;/option&gt;&lt;option value=&quot;unpaid&quot;&gt;Client Does Not Pay OT&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+  &lt;div class=&quot;field secondary-field&quot;&gt;&lt;label&gt;Operational Cost ($/hr)&lt;/label&gt;&lt;input id=&quot;ops&quot; type=&quot;number&quot; value=&quot;2&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;field secondary-field&quot;&gt;&lt;label&gt;Desired Minimum Net Margin ($/hr)&lt;/label&gt;&lt;input id=&quot;desired&quot; type=&quot;number&quot; value=&quot;5&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;field secondary-field&quot;&gt;&lt;label&gt;OT Scenario&lt;/label&gt;&lt;select id=&quot;otMode&quot; onchange=&quot;toggleOT()&quot;&gt;&lt;option value=&quot;none&quot;&gt;No OT Expected&lt;/option&gt;&lt;option value=&quot;premium&quot;&gt;Client Pays OT Premium&lt;/option&gt;&lt;option value=&quot;straight&quot;&gt;Client Pays Straight Time Only&lt;/option&gt;&lt;option value=&quot;unpaid&quot;&gt;Client Does Not Pay OT&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
   &lt;div class=&quot;field ot-field hidden&quot;&gt;&lt;label&gt;Candidate OT Hours / Week&lt;/label&gt;&lt;input id=&quot;otHours&quot; type=&quot;number&quot; value=&quot;0&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;field ot-field hidden&quot;&gt;&lt;label&gt;Candidate OT Multiplier&lt;/label&gt;&lt;input id=&quot;otMult&quot; type=&quot;number&quot; value=&quot;1.5&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;field ot-field hidden&quot;&gt;&lt;label&gt;Client OT Multiplier&lt;/label&gt;&lt;input id=&quot;clientOtMult&quot; type=&quot;number&quot; value=&quot;1.5&quot; step=&quot;.01&quot;&gt;&lt;/div&gt;
@@ -847,7 +917,7 @@ body.dark .package-entry-section{
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;details class=&quot;guide-box&quot;&gt;&lt;summary&gt;🧮 Easy Calculation Story&lt;/summary&gt;&lt;div class=&quot;guide-content&quot;&gt;&lt;div class=&quot;box&quot; id=&quot;details&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/details&gt;&lt;div class=&quot;foot&quot;&gt;Developed by &lt;strong&gt;Mr. Soni&lt;/strong&gt; &amp;nbsp;|&amp;nbsp; Siri HealthCare Services Inc.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;details class=&quot;guide-box&quot;&gt;&lt;summary&gt;🧮 Easy Calculation Story&lt;/summary&gt;&lt;div class=&quot;guide-content&quot;&gt;&lt;div class=&quot;box&quot; id=&quot;details&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/details&gt;&lt;div class=&quot;foot&quot;&gt;Designed &amp;amp; Developed by &lt;strong&gt;Sachin Soni&lt;/strong&gt; &amp;nbsp;|&amp;nbsp; Siri HealthCare Services Inc.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;div id=&quot;printDialog&quot; class=&quot;print-modal&quot; aria-hidden=&quot;true&quot;&gt;
 &lt;div class=&quot;print-modal-card&quot;&gt;
   &lt;button class=&quot;modal-close&quot; onclick=&quot;closePrintDialog()&quot; aria-label=&quot;Close&quot;&gt;×&lt;/button&gt;
