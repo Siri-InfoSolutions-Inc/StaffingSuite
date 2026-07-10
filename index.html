@@ -198,6 +198,7 @@ body.dark .primary-rate-field{background:#203240}
  .secondary-settings-label{display:block}
  .secondary-settings-label small{display:block;margin-top:4px}
 }
+@media print{.no-print-rtr{display:none!important}}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -279,7 +280,7 @@ body.dark .primary-rate-field{background:#203240}
  &lt;/div&gt;
 &lt;/section&gt;
 
-&lt;section class=&quot;section&quot;&gt;
+&lt;section class=&quot;no-print-rtr section&quot;&gt;
  &lt;div class=&quot;eyebrow&quot;&gt;READY TO USE&lt;/div&gt;&lt;h2 id=&quot;messageHeading&quot;&gt;📄 Right to Represent (RTR)&lt;/h2&gt;
  &lt;div class=&quot;rtr-intro&quot;&gt;Enter the candidate and client details below to generate the Right to Represent authorization. These details do not affect margin calculations.&lt;/div&gt;
 &lt;div class=&quot;grid rtr-details-grid&quot;&gt;
@@ -444,12 +445,31 @@ function resetCalc(){
   calculate();
 }
 function toggleTheme(){document.body.classList.toggle(&#x27;dark&#x27;);document.querySelector(&#x27;.theme&#x27;).textContent=document.body.classList.contains(&#x27;dark&#x27;)?&#x27;☀️ Day&#x27;:&#x27;🌙 Night&#x27;}
-function openPrint(){$(&#x27;printModal&#x27;).classList.add(&#x27;show&#x27;);$(&#x27;printError&#x27;).style.display=&#x27;none&#x27;}
+function openPrint(){
+  const candidate=$(&#x27;rtrCandidateName&#x27;) ? $(&#x27;rtrCandidateName&#x27;).value.trim() : &#x27;&#x27;;
+  const client=$(&#x27;rtrClientName&#x27;) ? $(&#x27;rtrClientName&#x27;).value.trim() : &#x27;&#x27;;
+
+  if(candidate &amp;&amp; client){
+    if($(&#x27;candidateName&#x27;)) $(&#x27;candidateName&#x27;).value=candidate;
+    if($(&#x27;clientName&#x27;)) $(&#x27;clientName&#x27;).value=client;
+    document.querySelectorAll(&#x27;details&#x27;).forEach(d=&gt;d.open=true);
+    setTimeout(()=&gt;window.print(),150);
+    return;
+  }
+
+  if($(&#x27;candidateName&#x27;)) $(&#x27;candidateName&#x27;).value=candidate;
+  if($(&#x27;clientName&#x27;)) $(&#x27;clientName&#x27;).value=client;
+  $(&#x27;printModal&#x27;).classList.add(&#x27;show&#x27;);
+  $(&#x27;printError&#x27;).style.display=&#x27;none&#x27;;
+}
 function closePrint(){$(&#x27;printModal&#x27;).classList.remove(&#x27;show&#x27;)}
 function doPrint(){
  const c=$(&#x27;candidateName&#x27;).value.trim(),cl=$(&#x27;clientName&#x27;).value.trim();
  if(!c||!cl){$(&#x27;printError&#x27;).style.display=&#x27;block&#x27;;$(&#x27;printError&#x27;).textContent=&#x27;Candidate Name and Client / Facility Name are required for PDF output.&#x27;;return}
- document.querySelectorAll(&#x27;details&#x27;).forEach(d=&gt;d.open=true);closePrint();setTimeout(()=&gt;window.print(),150)
+ if($(&#x27;rtrCandidateName&#x27;)) $(&#x27;rtrCandidateName&#x27;).value=c;
+  if($(&#x27;rtrClientName&#x27;)) $(&#x27;rtrClientName&#x27;).value=cl;
+  calculate();
+  document.querySelectorAll(&#x27;details&#x27;).forEach(d=&gt;d.open=true);closePrint();setTimeout(()=&gt;window.print(),150)
 }
 document.querySelectorAll(&#x27;input&#x27;).forEach(x=&gt;x.addEventListener(&#x27;input&#x27;,calculate));
 document.querySelectorAll(&#x27;select&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,calculate));
@@ -715,6 +735,14 @@ body.dark .package-entry-section{
 .rtr-fields .field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}
 .rtr-fields input{width:100%;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text)}
 @media(max-width:650px){.rtr-fields{grid-template-columns:1fr}}
+
+@media print{
+  details{display:block!important;overflow:visible!important}
+  details&gt;summary{display:none!important}
+  details .guide-content,details .details{display:block!important;visibility:visible!important}
+  .print-report-header{display:flex!important}
+}
+@media print{.no-print-rtr,.healthcare-rtr-section{display:none!important}}
 &lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;wrap&quot;&gt;&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;head&quot;&gt;&lt;div class=&quot;brand&quot;&gt;&lt;img src=&quot;https://cdn.prod.website-files.com/6540650aa6e7078f6b1d4dec/65435574bb3a988c6321cce0_SH%20Logo1a.webp&quot; alt=&quot;Siri Health&quot;&gt;&lt;div&gt;&lt;h1&gt;Medefis Pay Package &amp;amp; Margin Calculator&lt;/h1&gt;&lt;div class=&quot;sub&quot;&gt;Siri HealthCare Services Inc.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;button class=&quot;theme&quot; id=&quot;theme&quot; onclick=&quot;toggleTheme()&quot;&gt;🌙 Night&lt;/button&gt;&lt;/div&gt;
 &lt;section class=&quot;package-entry-section&quot;&gt;
 &lt;div class=&quot;section-head&quot;&gt;
@@ -820,7 +848,7 @@ body.dark .package-entry-section{
 
 
 
-&lt;section class=&quot;pitch-section healthcare-rtr-section&quot;&gt;
+&lt;section class=&quot;pitch-section healthcare-rtr-section no-print-rtr&quot;&gt;
 &lt;div class=&quot;section-head&quot;&gt;
   &lt;div&gt;&lt;div class=&quot;eyebrow&quot;&gt;RIGHT TO REPRESENT&lt;/div&gt;&lt;h2&gt;📄 Healthcare RTR Authorization&lt;/h2&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -922,50 +950,55 @@ body.dark .package-entry-section{
 &lt;script&gt;
 const $=id=&gt;document.getElementById(id), num=id=&gt;parseFloat($(id).value)||0, money=x=&gt;&#x27;$&#x27;+x.toFixed(2);
 function openPrintDialog(){
-  let pc=$(&#x27;printCandidateName&#x27;), pl=$(&#x27;printClientName&#x27;);
-  if(pc &amp;&amp; !$(&#x27;candidateName&#x27;).value) pc.value=&#x27;&#x27;;
-  if(pl &amp;&amp; !$(&#x27;clientName&#x27;).value) pl.value=&#x27;&#x27;;
-  $(&#x27;printValidation&#x27;).style.display=&#x27;none&#x27;;
+  const candidate=$(&#x27;hcRtrCandidate&#x27;) ? $(&#x27;hcRtrCandidate&#x27;).value.trim() : &#x27;&#x27;;
+  const client=$(&#x27;hcRtrClient&#x27;) ? $(&#x27;hcRtrClient&#x27;).value.trim() : &#x27;&#x27;;
+
+  if(candidate &amp;&amp; client){
+    if($(&#x27;candidateName&#x27;)) $(&#x27;candidateName&#x27;).value=candidate;
+    if($(&#x27;clientName&#x27;)) $(&#x27;clientName&#x27;).value=client;
+    if($(&#x27;printCandidateDisplay&#x27;)) $(&#x27;printCandidateDisplay&#x27;).textContent=candidate;
+    if($(&#x27;printClientDisplay&#x27;)) $(&#x27;printClientDisplay&#x27;).textContent=client;
+    if($(&#x27;printGeneratedDate&#x27;)) $(&#x27;printGeneratedDate&#x27;).textContent=&#x27;Generated &#x27;+new Date().toLocaleString();
+    document.querySelectorAll(&#x27;details&#x27;).forEach(d=&gt;d.open=true);
+    setTimeout(()=&gt;window.print(),150);
+    return;
+  }
+
+  if($(&#x27;printCandidateName&#x27;)) $(&#x27;printCandidateName&#x27;).value=candidate;
+  if($(&#x27;printClientName&#x27;)) $(&#x27;printClientName&#x27;).value=client;
   $(&#x27;printDialog&#x27;).classList.add(&#x27;show&#x27;);
-  $(&#x27;printDialog&#x27;).setAttribute(&#x27;aria-hidden&#x27;,&#x27;false&#x27;);
-  setTimeout(()=&gt;pc.focus(),50);
+  if($(&#x27;printValidation&#x27;)) $(&#x27;printValidation&#x27;).style.display=&#x27;none&#x27;;
 }
 function closePrintDialog(){
   $(&#x27;printDialog&#x27;).classList.remove(&#x27;show&#x27;);
   $(&#x27;printDialog&#x27;).setAttribute(&#x27;aria-hidden&#x27;,&#x27;true&#x27;);
 }
 function prepareAndPrint(){
-  let candidate=$(&#x27;printCandidateName&#x27;).value.trim();
-  let client=$(&#x27;printClientName&#x27;).value.trim();
-  let pv=$(&#x27;printValidation&#x27;);
-  let errors=[];
-  if(!candidate) errors.push(&#x27;Candidate Name is required for the PDF.&#x27;);
-  if(!client) errors.push(&#x27;Facility / Client Name is required for the PDF.&#x27;);
-  if(errors.length){
+  const candidate=$(&#x27;printCandidateName&#x27;).value.trim();
+  const client=$(&#x27;printClientName&#x27;).value.trim();
+  const pv=$(&#x27;printValidation&#x27;);
+
+  if(!candidate || !client){
     pv.style.display=&#x27;block&#x27;;
-    pv.innerHTML=&#x27;⛔ &#x27;+errors.join(&#x27;&lt;br&gt;⛔ &#x27;);
+    pv.textContent=&#x27;Candidate Name and Facility / Client Name are required for PDF output.&#x27;;
     return;
   }
+
   pv.style.display=&#x27;none&#x27;;
-  $(&#x27;candidateName&#x27;).value=candidate;
-  $(&#x27;clientName&#x27;).value=client;
-  $(&#x27;printCandidateDisplay&#x27;).textContent=candidate;
-  $(&#x27;printClientDisplay&#x27;).textContent=client;
+
+  if($(&#x27;candidateName&#x27;)) $(&#x27;candidateName&#x27;).value=candidate;
+  if($(&#x27;clientName&#x27;)) $(&#x27;clientName&#x27;).value=client;
+  if($(&#x27;printCandidateDisplay&#x27;)) $(&#x27;printCandidateDisplay&#x27;).textContent=candidate;
+  if($(&#x27;printClientDisplay&#x27;)) $(&#x27;printClientDisplay&#x27;).textContent=client;
   if($(&#x27;printGeneratedDate&#x27;)) $(&#x27;printGeneratedDate&#x27;).textContent=&#x27;Generated &#x27;+new Date().toLocaleString();
-  calculate();
 
-  // Open every minimized section so all content is included in print/PDF.
-  let detailsEls=[...document.querySelectorAll(&#x27;details&#x27;)];
-  let previousStates=detailsEls.map(d=&gt;d.open);
-  detailsEls.forEach(d=&gt;d.open=true);
+  if($(&#x27;hcRtrCandidate&#x27;)) $(&#x27;hcRtrCandidate&#x27;).value=candidate;
+  if($(&#x27;hcRtrClient&#x27;)) $(&#x27;hcRtrClient&#x27;).value=client;
+  if($(&#x27;hcRtrText&#x27;)) updateHealthcareRTR();
 
+  document.querySelectorAll(&#x27;details&#x27;).forEach(d=&gt;d.open=true);
   closePrintDialog();
-  setTimeout(()=&gt;{
-    window.print();
-    setTimeout(()=&gt;{
-      detailsEls.forEach((d,i)=&gt;d.open=previousStates[i]);
-    },300);
-  },180);
+  setTimeout(()=&gt;window.print(),150);
 }
 
 function updateHealthcareRTR(){
@@ -1201,7 +1234,7 @@ Please let me know if this package works for you and we can discuss the next ste
 
 *Non-taxable stipend is available to eligible travelers based on applicable tax-home and assignment requirements.`;
 
-$(&#x27;candidatePitch&#x27;).textContent=pitch;
+if($(&#x27;candidatePitch&#x27;)) $(&#x27;candidatePitch&#x27;).textContent=pitch;
 if($(&#x27;hcRtrText&#x27;)) updateHealthcareRTR();
 
 let clientOTText=clientPaysOT
