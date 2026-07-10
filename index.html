@@ -357,9 +357,9 @@ function setMode(m){
  document.querySelectorAll(&#x27;.travel-only&#x27;).forEach(x=&gt;x.classList.toggle(&#x27;hidden&#x27;,m!==&#x27;travel&#x27;));
  if(business===&#x27;healthcare&#x27;) document.querySelectorAll(&#x27;.healthcare-only&#x27;).forEach(x=&gt;x.classList.remove(&#x27;hidden&#x27;));
  const burden=$(&#x27;burden&#x27;), hours=$(&#x27;hours&#x27;), pr=$(&#x27;pr&#x27;);
- if(m===&#x27;w2&#x27;){ $(&#x27;modelName&#x27;).textContent=&#x27;W2&#x27;;$(&#x27;basisName&#x27;).textContent=&#x27;Pay + Burden&#x27;;$(&#x27;payLabel&#x27;).textContent=&#x27;Taxable Pay Rate ($/hr)&#x27;;$(&#x27;rPayLabel&#x27;).textContent=&#x27;TAXABLE PAY RATE&#x27;;burden.value=15;hours.value=40;pr.value=60; }
- if(m===&#x27;c2c&#x27;){ $(&#x27;modelName&#x27;).textContent=&#x27;C2C&#x27;;$(&#x27;basisName&#x27;).textContent=&#x27;C2C Rate&#x27;;$(&#x27;payLabel&#x27;).textContent=&#x27;C2C Pay Rate ($/hr)&#x27;;$(&#x27;rPayLabel&#x27;).textContent=&#x27;C2C PAY RATE&#x27;;burden.value=0;hours.value=40;pr.value=70; }
- if(m===&#x27;1099&#x27;){ $(&#x27;modelName&#x27;).textContent=&#x27;1099&#x27;;$(&#x27;basisName&#x27;).textContent=&#x27;Contractor Rate&#x27;;$(&#x27;payLabel&#x27;).textContent=&#x27;1099 Pay Rate ($/hr)&#x27;;$(&#x27;rPayLabel&#x27;).textContent=&#x27;1099 PAY RATE&#x27;;burden.value=0;hours.value=40;pr.value=65; }
+ if(m===&#x27;w2&#x27;){ $(&#x27;modelName&#x27;).textContent=&#x27;W2&#x27;;$(&#x27;basisName&#x27;).textContent=&#x27;Pay + Burden&#x27;;$(&#x27;payLabel&#x27;).textContent=&#x27;Taxable Pay Rate ($/hr)&#x27;;$(&#x27;rPayLabel&#x27;).textContent=&#x27;TAXABLE PAY RATE&#x27;;burden.value=15;hours.value=40;pr.value=0;br.value=0; }
+ if(m===&#x27;c2c&#x27;){ $(&#x27;modelName&#x27;).textContent=&#x27;C2C&#x27;;$(&#x27;basisName&#x27;).textContent=&#x27;C2C Rate&#x27;;$(&#x27;payLabel&#x27;).textContent=&#x27;C2C Pay Rate ($/hr)&#x27;;$(&#x27;rPayLabel&#x27;).textContent=&#x27;C2C PAY RATE&#x27;;burden.value=0;hours.value=40;pr.value=0;br.value=0; }
+ if(m===&#x27;1099&#x27;){ $(&#x27;modelName&#x27;).textContent=&#x27;1099&#x27;;$(&#x27;basisName&#x27;).textContent=&#x27;Contractor Rate&#x27;;$(&#x27;payLabel&#x27;).textContent=&#x27;1099 Pay Rate ($/hr)&#x27;;$(&#x27;rPayLabel&#x27;).textContent=&#x27;1099 PAY RATE&#x27;;burden.value=0;hours.value=40;pr.value=0;br.value=0; }
  if(m===&#x27;travel&#x27;){ $(&#x27;modelName&#x27;).textContent=&#x27;Healthcare Travel&#x27;;$(&#x27;basisName&#x27;).textContent=&#x27;Taxable + Stipend&#x27;;$(&#x27;payLabel&#x27;).textContent=&#x27;Taxable Pay Rate ($/hr)&#x27;;$(&#x27;rPayLabel&#x27;).textContent=&#x27;TAXABLE PAY RATE&#x27;;burden.value=15;hours.value=36;pr.value=37; }
  calculate();
 }
@@ -425,38 +425,21 @@ function calculate(){
 }
 function copyPitch(){navigator.clipboard.writeText($(&#x27;pitch&#x27;).textContent).then(()=&gt;{$(&#x27;copyStatus&#x27;).textContent=&#x27; Copied!&#x27;;setTimeout(()=&gt;$(&#x27;copyStatus&#x27;).textContent=&#x27;&#x27;,1600)})}
 function resetCalc(){
-  // Common defaults
-  $(&#x27;br&#x27;).value=90;
-  $(&#x27;hours&#x27;).value=business===&#x27;healthcare&#x27;?36:40;
-  $(&#x27;tenure&#x27;).value=13;
-  $(&#x27;msp&#x27;).value=business===&#x27;healthcare&#x27;?6.5:2.5;
-  $(&#x27;burden&#x27;).value=(business===&#x27;healthcare&#x27;||mode===&#x27;w2&#x27;)?15:0;
+  $(&#x27;br&#x27;).value=0;
+  $(&#x27;pr&#x27;).value=0;
+  $(&#x27;hours&#x27;).value=40;
+  $(&#x27;msp&#x27;).value=2.5;
+  $(&#x27;burden&#x27;).value=(mode===&#x27;w2&#x27;)?15:0;
   $(&#x27;ops&#x27;).value=2;
   $(&#x27;desired&#x27;).value=5;
   $(&#x27;otMode&#x27;).value=&#x27;none&#x27;;
   $(&#x27;otHours&#x27;).value=0;
   $(&#x27;otMult&#x27;).value=1.5;
   $(&#x27;clientOtMult&#x27;).value=1.5;
-  $(&#x27;stipend&#x27;).value=1240;
   if($(&#x27;rtrCandidateName&#x27;)) $(&#x27;rtrCandidateName&#x27;).value=&#x27;&#x27;;
   if($(&#x27;rtrClientName&#x27;)) $(&#x27;rtrClientName&#x27;).value=&#x27;&#x27;;
   if($(&#x27;candidateName&#x27;)) $(&#x27;candidateName&#x27;).value=&#x27;&#x27;;
   if($(&#x27;clientName&#x27;)) $(&#x27;clientName&#x27;).value=&#x27;&#x27;;
-
-  if(business===&#x27;healthcare&#x27;){
-    mode=&#x27;travel&#x27;;
-    $(&#x27;pr&#x27;).value=37;
-    document.querySelectorAll(&#x27;.travel-only&#x27;).forEach(x=&gt;x.classList.remove(&#x27;hidden&#x27;));
-    document.querySelectorAll(&#x27;.healthcare-only&#x27;).forEach(x=&gt;x.classList.remove(&#x27;hidden&#x27;));
-  }else{
-    if(mode===&#x27;travel&#x27;) mode=&#x27;w2&#x27;;
-    if(mode===&#x27;w2&#x27;) $(&#x27;pr&#x27;).value=60;
-    if(mode===&#x27;c2c&#x27;) $(&#x27;pr&#x27;).value=70;
-    if(mode===&#x27;1099&#x27;) $(&#x27;pr&#x27;).value=65;
-    document.querySelectorAll(&#x27;.travel-only&#x27;).forEach(x=&gt;x.classList.add(&#x27;hidden&#x27;));
-    document.querySelectorAll(&#x27;.healthcare-only&#x27;).forEach(x=&gt;x.classList.add(&#x27;hidden&#x27;));
-    document.querySelectorAll(&#x27;.employment-btn&#x27;).forEach(x=&gt;x.classList.toggle(&#x27;active&#x27;,x.dataset.mode===mode));
-  }
   document.querySelectorAll(&#x27;.ot-field&#x27;).forEach(x=&gt;x.classList.add(&#x27;hidden&#x27;));
   calculate();
 }
